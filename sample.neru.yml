@@ -1,0 +1,52 @@
+project:
+    name: filter-queue-messages
+instance:
+    name: dev
+    runtime: nodejs16
+    region: aws.euw1
+    application-id: [YOUR_APP_ID]
+    entrypoint: ["npm", "start"]
+    capabilities:
+        - messages-v1
+    environment:
+        - name: DEFAULT_SENDER_ID
+          value: "Vonage"
+        - name: DEFAULT_MAX_INFLIGHT
+          value: 30
+        - name: DEFAULT_MSG_PER_SECOND
+          value: 30
+        - name: INTERNAL_API_SECRET
+          secret: INTERNAL_API_SECRET
+        - name: ENABLE_WHITELIST_CHECK
+          value: true
+        - name: ENABLE_CONTENT_FILTER
+          value: true
+        - name: ENABLE_GSM_CHECK
+          value: true
+        - name: ENABLE_LENGTH_CHECK
+          value: true
+        - name: DB_TABLENAME_WHITELIST
+          value: DB_WHITELIST
+        - name: FORBIDDEN_WORDS
+          value: "undefined,null,{,},{||},|,expression"
+        - name: FORBIDDEN_WORDS_DELIMITER
+          value: ","
+        - name: GSM_REGEX
+          value: ^[@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!\"#¤%&\'()*+,-./0-9:;<=>?¡A-ZÄÖÑÜ§¿a-zäöñüà{}^\[\]~\\€|\s]+$
+        - name: GSM_EXTENDED_REGEX
+          value: €|\^|\{|\}|\[|\]|~|\|
+        - name: ALLOWED_SMS_LENGTH
+          value: 160
+        - name: ENABLE_TIME_WINDOW_CHECK
+          value: true
+        - name: TIME_WINDOW_ALLOWED
+          value: "* 7-20 * * *"
+        - name: ENABLE_FRENQUENCY_CHECK
+          value: true
+        - name: MAX_MESSAGES_ALLOWED
+          value: 1
+        - name: MAX_MESSAGES_ALLOWED_PERIOD
+          value: 86400
+debug:
+    name: 1
+    entrypoint: [nodemon, --inspect, index.js]
